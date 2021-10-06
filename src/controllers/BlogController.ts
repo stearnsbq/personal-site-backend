@@ -22,7 +22,7 @@ export class BlogController extends BaseController{
     }
 
 
-    // ROUTES
+
 
     private getAllBlogPosts(req: express.Request, res: express.Response){
 

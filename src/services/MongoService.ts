@@ -11,7 +11,4 @@ export class MongoService{
         this.client = await mongoose.connect(uri);
     }
 
-
-
-
 }

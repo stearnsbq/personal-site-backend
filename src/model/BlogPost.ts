@@ -1,7 +1,6 @@
 import { Document, model, Model, Schema, Types } from "mongoose";
 
 export interface IBlogPost extends Document{
-    _id: string,
     title: string,
     description: string;
     created: Date,
@@ -13,7 +12,6 @@ export interface IBlogPost extends Document{
 
 
 const schema = new Schema<IBlogPost>({
-    _id: {type: String, required: true},
     title: {type: String, required: true},
     created: {type: Date, required: true},
     lastUpdated: {type: Date, required: true},
@@ -24,4 +22,4 @@ const schema = new Schema<IBlogPost>({
 
 
 
-const BlogPost : Model<IBlogPost> = model('BlogPost', schema);
+export const BlogPost : Model<IBlogPost> = model('BlogPost', schema);
