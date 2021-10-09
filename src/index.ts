@@ -2,12 +2,25 @@ import "reflect-metadata";
 import App from "./app";
 import { json } from "body-parser";
 import mongoose from 'mongoose'; 
+require('dotenv').config()
 
-const app = new App(__dirname + "/controllers", [json()], 8080);
 
-app.listen(async () => {
+async function main(){
 
-  await mongoose.connect(process.env.MONGO_URL);
+  try{
+    const app = new App(__dirname + "/controllers", [json()], 8080);
 
-  console.log(`Listening on ${app.port}`);
-});
+    await mongoose.connect(process.env.MONGO_URL);
+  
+    app.listen(async () => {
+      console.log(`Listening on ${app.port}`);
+    });
+  }catch(err){
+    console.log("FAILED TO START APPLICATION", err)
+  }
+
+
+}
+
+
+main();

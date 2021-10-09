@@ -14,15 +14,11 @@ export class LoginController extends BaseController{
 
 
     initRoutes(): void {
-        this.router.post(this.path, this.login.bind(this))
+        this.router.post(this.path + '/login', this.login.bind(this))
     }
-
 
     public login(req: Request, res : Response){
 
     }
-
-
-
 
 }
