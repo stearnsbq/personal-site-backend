@@ -8,11 +8,11 @@ export default class App {
   constructor(controllersDir: string, middleware: any[], port: number) {
     this.app = express();
     this.port = port;
-    this.initControllers(controllersDir);
     this.initMiddleware(middleware);
+    this.initControllers(controllersDir);
   }
 
-  private initMiddleware(middlewares: any[]) {
+  private initMiddleware(middlewares: express.Handler[]) {
     middlewares.forEach((middleware) => this.app.use(middleware));
   }
 

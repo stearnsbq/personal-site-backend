@@ -1,5 +1,3 @@
-import { Request, Response } from "express";
-import { AboutMe } from "../model/AboutMe";
 import { Service } from "typedi";
 import { BaseController } from "../model/BaseController";
 
@@ -15,6 +13,6 @@ export class AdminController extends BaseController {
 
   }
 
-  
+
 
 }
