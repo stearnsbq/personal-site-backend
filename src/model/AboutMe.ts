@@ -1,19 +1,6 @@
-import { Document, model, Model, Schema, Types } from "mongoose";
+import { modelOptions, prop } from "@typegoose/typegoose";
+import { Document, model, Model, ObjectId, Schema, Types } from "mongoose";
 
-export interface Experience {
-  title: string;
-  company: string;
-  start: Date;
-  end?: Date;
-  bullets: string[];
-}
-
-export interface CertsAndLicenses {
-  title: string;
-  description: string;
-  acquired: Date;
-  expiration?: Date;
-}
 
 export interface IAboutMe extends Document {
   aboutMe: string;
@@ -27,11 +14,7 @@ const schema = new Schema<IAboutMe>({
   education: { type: String, required: true },
   experience: [
     {
-      title: { type: String, required: true },
-      company: { type: String, required: true },
-      start: { type: Date, required: true },
-      end: { type: Date, required: false },
-      bullets: { type: [String], required: true },
+
     }
   ],
   certsAndLicenses: [
@@ -45,5 +28,73 @@ const schema = new Schema<IAboutMe>({
 }, {capped: {size:999999, max:1}});
 
 
+export class CertsAndLicenses {
+  @prop()
+  title: string;
 
-export const AboutMe: Model<IAboutMe> = model("AboutMe", schema);
+  @prop()
+  description: string;
+
+  @prop()
+  acquired: Date;
+
+  @prop()
+  expiration?: Date;
+}
+
+
+
+export class Experience{
+  @prop()
+  public title: string;
+
+  @prop()
+  public  company: string;
+
+  @prop()
+  public start: Date;
+
+  @prop()
+  public end?: Date;
+
+  @prop({type: () => [String]})
+  public bullets: string[];
+}
+
+export class Education{
+  @prop()
+  public degree: string;
+
+  @prop()
+  public school: string;
+
+  @prop()
+  public start: Date;
+
+  @prop()
+  public end?: Date;
+}
+
+
+@modelOptions({ schemaOptions: {capped: {size:999999, max:1}}})
+export class AboutMe{
+
+  @prop()
+  public _id: string; 
+
+  @prop({required: true})
+  public about: string;
+
+  @prop({type: () => [Education]})
+  public education: Education[];
+
+  @prop({type: () => [Experience]})
+  public experience : Experience[];
+
+  @prop({type: () => [CertsAndLicenses]})
+  public certsAndLicenses: CertsAndLicenses[];
+
+}
+
+
+

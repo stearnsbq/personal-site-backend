@@ -1,5 +1,6 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import fs from "fs";
+import { Error } from "mongoose";
 
 export default class App {
   public app: express.Application;
@@ -10,6 +11,7 @@ export default class App {
     this.port = port;
     this.initMiddleware(middleware);
     this.initControllers(controllersDir);
+    this.app.use(this.onError.bind(this));
   }
 
   private initMiddleware(middlewares: express.Handler[]) {
@@ -26,6 +28,15 @@ export default class App {
 
       this.app.use("/", instance.router);
     });
+  }
+
+  private onError(err: any, req: Request, res : Response, next : NextFunction){
+    
+    if(err.name === "UnauthorizedError"){
+      res.status(401).send({success: false, err: 'Unauthorized'})
+    }
+    
+    next();
   }
 
   public listen(callback: () => void) {
