@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { getModelForClass, getModelWithString, ReturnModelType } from "@typegoose/typegoose";
 import { AboutMe } from "../model/AboutMe";
 import { Admin } from "../model/Admin";
+import { BlogPost } from "../model/BlogPost";
 
 
 @Service()
@@ -11,9 +12,15 @@ export class MongoService{
 
     private _aboutMe: ReturnModelType<typeof AboutMe>;
     private _admin : ReturnModelType<typeof Admin>;
+    private _blog: ReturnModelType<typeof BlogPost>;
+
 
     constructor(){
+
         this._aboutMe = getModelForClass(AboutMe);
+        this._admin = getModelForClass(Admin);
+        this._blog = getModelForClass(BlogPost);
+        console.log(this._aboutMe, this._admin, this._blog)
     }
 
     public async connect(url: string){
@@ -28,7 +35,8 @@ export class MongoService{
         return this._admin;
     }
 
-
-
+    public get blog(): ReturnModelType<typeof BlogPost> {
+        return this._blog;
+    }
 
 }

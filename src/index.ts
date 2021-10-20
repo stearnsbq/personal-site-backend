@@ -12,6 +12,7 @@ import { MongoService } from "./services/MongoService";
 async function main() {
   try {
     config();
+
     const app = new App(__dirname + "/controllers", [json(), helmet(), cors({origin: "*"}), morgan('common')], 8080);
 
     const mongo = Container.get(MongoService);

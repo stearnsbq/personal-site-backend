@@ -76,7 +76,7 @@ export class Education{
 }
 
 
-@modelOptions({ schemaOptions: {capped: {size:999999, max:1}}})
+@modelOptions({ schemaOptions: {capped: {max:1}}})
 export class AboutMe{
 
   @prop()

@@ -1,6 +1,8 @@
 import express, { NextFunction, Request, Response } from "express";
 import fs from "fs";
 import { Error } from "mongoose";
+import Container from "typedi";
+import { BaseController } from "./model/BaseController";
 
 export default class App {
   public app: express.Application;
@@ -24,7 +26,7 @@ export default class App {
     files.forEach((file) => {
       const module = this.fromFile(controllersDir + "/" + file);
 
-      const instance = new module[file.split(".ts")[0]]();
+      const instance = Container.get<BaseController>(module[file.split(".ts")[0]]);
 
       this.app.use("/", instance.router);
     });

@@ -30,11 +30,11 @@ export class AboutMeController extends BaseController {
       const body = req.body as AboutMe;
 
       const aboutMe = await this._mongo.aboutMe.findOneAndUpdate(
-        { _id: body._id },
+        {},
         body,
         { upsert: true }
       );
-      res.status(200).send({ success: true, aboutMe });
+      res.status(200).send({ success: true, data: aboutMe });
     } catch (err) {
       res.status(500).send({ success: false, err });
     }
