@@ -4,6 +4,7 @@ import { getModelForClass, getModelWithString, ReturnModelType } from "@typegoos
 import { AboutMe } from "../model/AboutMe";
 import { Admin } from "../model/Admin";
 import { BlogPost } from "../model/BlogPost";
+import { Project } from "../model/Project";
 
 
 @Service()
@@ -13,14 +14,14 @@ export class MongoService{
     private _aboutMe: ReturnModelType<typeof AboutMe>;
     private _admin : ReturnModelType<typeof Admin>;
     private _blog: ReturnModelType<typeof BlogPost>;
+    private _project: ReturnModelType<typeof Project>;
 
 
     constructor(){
-
         this._aboutMe = getModelForClass(AboutMe);
         this._admin = getModelForClass(Admin);
         this._blog = getModelForClass(BlogPost);
-        console.log(this._aboutMe, this._admin, this._blog)
+        this._project = getModelForClass(Project);
     }
 
     public async connect(url: string){
@@ -37,6 +38,10 @@ export class MongoService{
 
     public get blog(): ReturnModelType<typeof BlogPost> {
         return this._blog;
+    }
+
+    public get project(): ReturnModelType<typeof Project> {
+        return this._project;
     }
 
 }

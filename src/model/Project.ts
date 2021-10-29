@@ -12,6 +12,7 @@ export class Project {
 
     @prop()
     githubID?: string;
+    
     @prop({required: true})
     created: Date;
 

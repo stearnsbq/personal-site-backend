@@ -1,32 +1,4 @@
 import { modelOptions, prop } from "@typegoose/typegoose";
-import { Document, model, Model, ObjectId, Schema, Types } from "mongoose";
-
-
-export interface IAboutMe extends Document {
-  aboutMe: string;
-  education: string;
-  experience: [Experience];
-  certsAndLicenses: [CertsAndLicenses];
-}
-
-const schema = new Schema<IAboutMe>({
-  aboutMe: { type: String, required: true },
-  education: { type: String, required: true },
-  experience: [
-    {
-
-    }
-  ],
-  certsAndLicenses: [
-    {
-      title: { type: String, required: true },
-      description: { type: String, required: true },
-      acquired: { type: Date, required: true },
-      expiration: { type: Date, required: false }
-    }
-  ],
-}, {capped: {size:999999, max:1}});
-
 
 export class CertsAndLicenses {
   @prop()
@@ -42,14 +14,12 @@ export class CertsAndLicenses {
   expiration?: Date;
 }
 
-
-
-export class Experience{
+export class Experience {
   @prop()
   public title: string;
 
   @prop()
-  public  company: string;
+  public company: string;
 
   @prop()
   public start: Date;
@@ -57,11 +27,11 @@ export class Experience{
   @prop()
   public end?: Date;
 
-  @prop({type: () => [String]})
+  @prop({ type: () => [String] })
   public bullets: string[];
 }
 
-export class Education{
+export class Education {
   @prop()
   public degree: string;
 
@@ -75,26 +45,20 @@ export class Education{
   public end?: Date;
 }
 
-
-@modelOptions({ schemaOptions: {capped: {max:1}}})
-export class AboutMe{
-
+@modelOptions({ schemaOptions: { capped: { max: 1 } } })
+export class AboutMe {
   @prop()
-  public _id: string; 
+  public _id: string;
 
-  @prop({required: true})
+  @prop({ required: true })
   public about: string;
 
-  @prop({type: () => [Education]})
+  @prop({ type: () => [Education] })
   public education: Education[];
 
-  @prop({type: () => [Experience]})
-  public experience : Experience[];
+  @prop({ type: () => [Experience] })
+  public experience: Experience[];
 
-  @prop({type: () => [CertsAndLicenses]})
+  @prop({ type: () => [CertsAndLicenses] })
   public certsAndLicenses: CertsAndLicenses[];
-
 }
-
-
-
