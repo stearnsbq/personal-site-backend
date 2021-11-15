@@ -1,7 +1,7 @@
 import { prop } from "@typegoose/typegoose";
 
 export class Project {
-    @prop({required: true})
+    @prop({required: true, unique: true})
     title: string;
 
     @prop({required: true})

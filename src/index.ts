@@ -8,6 +8,7 @@ import morgan from 'morgan'
 import {config} from 'dotenv'
 import Container from "typedi";
 import { MongoService } from "./services/MongoService";
+import jwt from "jsonwebtoken";
 
 async function main() {
   try {
@@ -18,6 +19,12 @@ async function main() {
     const mongo = Container.get(MongoService);
 
     await mongo.connect(process.env.MONGO_URL)
+
+    console.log(jwt.sign(
+      { username: "quinn50" },
+      process.env.JWT_SECRET,
+      { expiresIn: "30d" }
+    ))
 
     app.listen(async () => {
       console.log(`Listening on ${app.port}`);

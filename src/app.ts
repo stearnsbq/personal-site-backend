@@ -3,6 +3,7 @@ import fs from "fs";
 import { Error } from "mongoose";
 import Container from "typedi";
 import { BaseController } from "./model/BaseController";
+import {join} from 'path'
 
 export default class App {
   public app: express.Application;
@@ -11,6 +12,7 @@ export default class App {
   constructor(controllersDir: string, middleware: any[], port: number) {
     this.app = express();
     this.port = port;
+    this.app.use('/static', express.static(join(__dirname, 'static')))
     this.initMiddleware(middleware);
     this.initControllers(controllersDir);
     this.app.use(this.onError.bind(this));
