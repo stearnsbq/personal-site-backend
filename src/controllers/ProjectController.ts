@@ -23,7 +23,7 @@ export class ProjectController extends BaseController {
       const projects = await this._mongo.project
         .find(
           {},
-          "title description created lastUpdated forks stars images githubURL"
+          "-_id -__v"
         )
         .exec();
 

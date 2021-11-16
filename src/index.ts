@@ -9,6 +9,7 @@ import {config} from 'dotenv'
 import Container from "typedi";
 import { MongoService } from "./services/MongoService";
 import jwt from "jsonwebtoken";
+import { GithubService } from "./services/GithubService";
 
 async function main() {
   try {
@@ -16,8 +17,11 @@ async function main() {
 
     const app = new App(__dirname + "/controllers", [json(), helmet(), cors({origin: "*"}), morgan('common')], 8080);
 
-    const mongo = Container.get(MongoService);
 
+    const mongo = Container.get(MongoService);
+    const git = Container.get(GithubService)
+
+    
     await mongo.connect(process.env.MONGO_URL)
 
     console.log(jwt.sign(

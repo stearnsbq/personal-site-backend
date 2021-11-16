@@ -4,11 +4,11 @@ export class Project {
     @prop({required: true, unique: true})
     title: string;
 
-    @prop({required: true})
-    description: string;
-
     @prop()
     githubURL?: string;
+
+    @prop()
+    description?: string;
 
     @prop()
     githubID?: string;
@@ -25,7 +25,7 @@ export class Project {
     @prop({required: true})
     stars: number;
 
-    @prop({type: () => [String]})
-    images: string[];
+    @prop({ type: () => [String], default: [] })
+    languages: string[];
 }
 
