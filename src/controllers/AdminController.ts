@@ -3,6 +3,7 @@ import { Service } from "typedi";
 import {hash} from 'argon2';
 import jwt from 'express-jwt'
 import { BaseController } from "../model/BaseController";
+import { JWT_MIDDLEWARE } from "../helpers/helpers";
 
 @Service()
 export class AdminController extends BaseController {
@@ -13,7 +14,7 @@ export class AdminController extends BaseController {
   }
 
   initRoutes(): void {
-    this.router.post('/create', jwt({secret: process.env.JWT_SECRET, algorithms: ['HS256']}), this.createAccount.bind(this))
+    this.router.post(this.path + '/create', JWT_MIDDLEWARE, this.createAccount.bind(this))
   }
 
 
@@ -24,13 +25,17 @@ export class AdminController extends BaseController {
 
       const {username, password} = req.body as {username: string, password: string}
 
+      if(await this._mongo.admin.findOne({username})){
+        return res.status(400).send({ success: false, message: "Admin already exists!" });
+      }
+
       const passwordHash = await hash(password);
 
       const account = await this._mongo.admin.create({username, password: passwordHash})
 
       account.save();
 
-      res.status(200).send({ success: true, message: "Account successfully created!" });
+      return res.status(200).send({ success: true, message: "Account successfully created!" });
     }catch(err){
       res.status(500).send({ success: false, message: "Account creation failed!", err });
     }

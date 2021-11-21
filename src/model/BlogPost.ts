@@ -21,6 +21,10 @@ export class BlogPost {
 
     @prop({required: true})
     public content!: string;
+
+    @prop({default: 0})
+    public views: number;
+
 }
 
 

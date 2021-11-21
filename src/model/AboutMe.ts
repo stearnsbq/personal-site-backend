@@ -5,6 +5,9 @@ export class CertsAndLicenses {
   title: string;
 
   @prop()
+  credential?: string;
+
+  @prop()
   description: string;
 
   @prop()

@@ -14,6 +14,7 @@ export class LoginController extends BaseController {
 
   initRoutes(): void {
     this.router.post(this.path + "/login", this.login.bind(this));
+    this.router.post(this.path + "/logout", this.logout.bind(this));
   }
 
   public async login(req: Request, res: Response) {
@@ -40,4 +41,36 @@ export class LoginController extends BaseController {
       return res.status(500).send({ success: false, err });
     }
   }
+
+
+  public async logout(req: Request, res: Response){
+    try {
+
+      const {authorization} = req.headers;
+
+      const token = authorization.split("Bearer ")[1];
+
+      if(!token){
+        return res.status(400).send({ success: false, message: 'Missing token!' });
+      }
+
+      const decoded = jwt.decode(token) as any;
+
+      const sig = token.split('.')[2];
+
+
+      if(await this._mongo.revokedToken.findOne({token: sig})){
+        return res.status(400).send({ success: false, message: 'You already logged out!' });
+      }
+
+
+
+      await this._mongo.revokedToken.create({token: sig, expireAt: new Date(decoded.exp * 1000)});
+
+      return res.status(200).send({ success: true, message: 'Logged out successfully!' });
+    } catch (err) {
+      return res.status(500).send({ success: false, err });
+    }
+  }
+
 }

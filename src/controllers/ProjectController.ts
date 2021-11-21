@@ -14,17 +14,22 @@ export class ProjectController extends BaseController {
 
   initRoutes(): void {
     this.router.get(this.path, this.getProjects.bind(this));
-    this.router.get(this.path + "/:title", this.getProject.bind(this));
     this.router.post(this.path, jwt({secret: process.env.JWT_SECRET, algorithms: ['HS256']}), this.upsertProject.bind(this));
   }
 
   private async getProjects(req: Request, res: Response) {
     try {
+
+      const {search, page} = req.query as {search: string, page: string};
+
+      const searchParams = search ? { $or: [ {title: {$regex: search, $options: 'i'}}, {description: {$regex: search, $options: 'i'}} ]} : {}
+
       const projects = await this._mongo.project
         .find(
-          {},
+          searchParams,
           "-_id -__v"
-        )
+        ).skip(12 * Math.max(0, parseInt(page)))
+        .limit(12)
         .exec();
 
       res
@@ -34,25 +39,6 @@ export class ProjectController extends BaseController {
           message: `Projects retrieved!`,
           data: projects ?? [],
         });
-    } catch (err) {
-      res.status(500).send({ success: false, err });
-    }
-  }
-
-  private async getProject(req: Request, res: Response) {
-    try {
-      const { title } = req.params;
-
-      const project = await this._mongo.project
-        .findOne(
-          { title },
-          "title description created lastUpdated forks stars images githubURL"
-        )
-        .exec();
-
-      res
-        .status(200)
-        .send({ success: true, message: `Project retrieved!`, data: project ?? {} });
     } catch (err) {
       res.status(500).send({ success: false, err });
     }

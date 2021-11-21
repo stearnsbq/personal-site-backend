@@ -5,6 +5,7 @@ import { AboutMe } from "../model/AboutMe";
 import { Admin } from "../model/Admin";
 import { BlogPost } from "../model/BlogPost";
 import { Project } from "../model/Project";
+import { RevokedToken } from "../model/RevokedToken";
 
 
 @Service()
@@ -15,13 +16,14 @@ export class MongoService{
     private _admin : ReturnModelType<typeof Admin>;
     private _blog: ReturnModelType<typeof BlogPost>;
     private _project: ReturnModelType<typeof Project>;
-
+    private _revokedToken: ReturnModelType<typeof RevokedToken>;
 
     constructor(){
         this._aboutMe = getModelForClass(AboutMe);
         this._admin = getModelForClass(Admin);
         this._blog = getModelForClass(BlogPost);
         this._project = getModelForClass(Project);
+        this._revokedToken = getModelForClass(RevokedToken);
     }
 
     public async connect(url: string){
@@ -43,5 +45,10 @@ export class MongoService{
     public get project(): ReturnModelType<typeof Project> {
         return this._project;
     }
+
+    public get revokedToken(): ReturnModelType<typeof RevokedToken> {
+        return this._revokedToken;
+    }
+
 
 }

@@ -92,6 +92,10 @@ export class BlogController extends BaseController {
         .exec();
 
       res.status(200).send({ success: true, message: `Post ${post.title} retrieved!`, data: post });
+
+      post.views++; // update view counter
+
+      await post.save();
     } catch (err) {
       res.status(500).send({ success: false, err });
     }
