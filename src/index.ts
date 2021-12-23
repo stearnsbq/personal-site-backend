@@ -10,6 +10,7 @@ import Container from "typedi";
 import { MongoService } from "./services/MongoService";
 import jwt from "jsonwebtoken";
 import { GithubService } from "./services/GithubService";
+import multer from "multer";
 
 async function main() {
   try {

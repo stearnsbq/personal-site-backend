@@ -18,7 +18,7 @@ export class AboutMeController extends BaseController {
 
   async getAboutMe(req: Request, res: Response) {
     try {
-      const aboutMe = await this._mongo.aboutMe.findOne({});
+      const aboutMe = await this._mongo.aboutMe.findOne({}, '-_id -__v -education._id -experience._id -certsAndLicenses._id');
       res.status(200).send({ success: true, message: "About me retrieved!", data: aboutMe });
     } catch (err) {
       res.status(500).send({ success: false, err });
@@ -32,7 +32,7 @@ export class AboutMeController extends BaseController {
       const aboutMe = await this._mongo.aboutMe.findOneAndUpdate(
         {},
         body,
-        { upsert: true }
+        { upsert: true, new: true }
       );
       res.status(200).send({ success: true, message: "About me updated!", data: aboutMe });
     } catch (err) {

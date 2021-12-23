@@ -1,10 +1,14 @@
 import { prop } from "@typegoose/typegoose";
 
 export class BlogPost {
-    @prop({required: true})
+
+    @prop()
+    public _id: string; // change the type of _id to string
+
+    @prop({required: true, unique: true})
     public title!: string;
 
-    @prop({required: true})
+    @prop({default: ''})
     public description!: string;
     
     @prop({required: true})
@@ -16,7 +20,7 @@ export class BlogPost {
     @prop({required: true})
     public timeToRead!: number;
 
-    @prop({required: true})
+    @prop({default: ''})
     public image!: string;
 
     @prop({required: true})
@@ -24,6 +28,9 @@ export class BlogPost {
 
     @prop({default: 0})
     public views: number;
+
+    @prop({ type: () => [String], default: [] })
+    public tags: string[];
 
 }
 
