@@ -2,9 +2,6 @@ import { prop } from "@typegoose/typegoose";
 
 export class BlogPost {
 
-    @prop()
-    public _id: string; // change the type of _id to string
-
     @prop({required: true, unique: true})
     public title!: string;
 
