@@ -4,6 +4,7 @@
   "description": "backend for my new personal site!",
   "main": "index.ts",
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "quinn50",
@@ -27,9 +28,11 @@
     "@types/morgan": "^1.9.3",
     "@types/multer": "^1.4.7",
     "@types/node": "^16.10.3",
+    "@types/node-cron": "^3.0.0",
     "@types/node-fetch": "^3.0.3",
     "argon2": "^0.28.2",
     "axios": "^0.24.0",
+    "bind-decorator": "^1.0.11",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "cron-decorators": "^0.1.5",
@@ -43,6 +46,7 @@
     "mongoose": "^6.0.8",
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
+    "node-cron": "^3.0.0",
     "node-fetch": "^2.6.6",
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0",

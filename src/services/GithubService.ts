@@ -1,7 +1,7 @@
 import axios, { ResponseType } from "axios";
 import { Inject, Service } from "typedi";
 import { MongoService } from "./MongoService";
-
+import { schedule, ScheduledTask } from "node-cron";
 
 @Service()
 export class GithubService {
@@ -32,18 +32,16 @@ export class GithubService {
       }`;
 
   @Inject()
-  private _mongo: MongoService
+  private _mongo: MongoService;
 
-  private timer: any;
+  private timer: ScheduledTask;
 
   constructor() {
-     // this.updateGithubProjects();
-     // this.timer = setInterval(this.updateGithubProjects.bind(this), 3600000)
+    // this.updateGithubProjects();
+    //this.timer = schedule('0 0 * * *', this.updateGithubProjects.bind(this));
   }
 
-
-
-  public updateGithubProjects(){
+  public updateGithubProjects() {
     axios
       .post(
         "https://api.github.com/graphql",
@@ -66,15 +64,36 @@ export class GithubService {
             repositories: { nodes },
           } = user;
 
-          for (const {name, url, id, languages, pushedAt, stargazers, forks, description, createdAt} of nodes) {
-
-            await this._mongo.project.findOneAndUpdate({'githubID': id}, {title: name, githubURL: url, githubID: id, created: new Date(createdAt), lastUpdated: new Date(pushedAt), forks: forks['totalCount'], stars: stargazers['totalCount'], languages: languages['nodes'].map((language: {name: string}) => language.name), description}, {upsert: true})
-
+          for (const {
+            name,
+            url,
+            id,
+            languages,
+            pushedAt,
+            stargazers,
+            forks,
+            description,
+            createdAt,
+          } of nodes) {
+            await this._mongo.project.findOneAndUpdate(
+              { githubID: id },
+              {
+                title: name,
+                githubURL: url,
+                githubID: id,
+                created: new Date(createdAt),
+                lastUpdated: new Date(pushedAt),
+                forks: forks["totalCount"],
+                stars: stargazers["totalCount"],
+                languages: languages["nodes"].map(
+                  (language: { name: string }) => language.name
+                ),
+                description,
+              },
+              { upsert: true }
+            );
           }
         }
       );
   }
-
-
 }
-

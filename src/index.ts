@@ -16,7 +16,7 @@ async function main() {
   try {
     config();
 
-    const app = new App(__dirname + "/controllers", [json(), helmet(), cors({origin: "*"}), morgan('common')], 8080);
+    const app = new App(__dirname + "/controllers", [json({limit: '100mb'}), helmet(), cors({origin: "*"}), morgan('common')], 8080);
 
 
     const mongo = Container.get(MongoService);
