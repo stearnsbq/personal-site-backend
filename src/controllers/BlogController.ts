@@ -73,8 +73,6 @@ export class BlogController extends BaseController {
         {$project: {_id: 0, year: {$toString: "$_id"}, months: 1}}
       ]);
 
-      console.log(archives);
-
       return res.status(200).json({ success: true, data: archives });
     } catch (err) {
       console.error(err);

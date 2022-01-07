@@ -3,6 +3,7 @@ import { AboutMe } from "../model/AboutMe";
 import { Inject, Service } from "typedi";
 import { BaseController } from "../model/BaseController";
 import jwt from 'express-jwt'
+
 @Service()
 export class AboutMeController extends BaseController {
   constructor() {

@@ -37,8 +37,8 @@ export class GithubService {
   private timer: ScheduledTask;
 
   constructor() {
-    // this.updateGithubProjects();
-    //this.timer = schedule('0 0 * * *', this.updateGithubProjects.bind(this));
+    this.updateGithubProjects();
+    this.timer = schedule('0 0 * * *', this.updateGithubProjects.bind(this));
   }
 
   public updateGithubProjects() {

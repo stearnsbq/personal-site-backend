@@ -1,10 +1,11 @@
 import express, { NextFunction, Request, Response } from "express";
 import fs from "fs";
 import { Error } from "mongoose";
-import Container from "typedi";
+import Container, { Service } from "typedi";
 import { BaseController } from "./model/BaseController";
 import {join} from 'path'
 
+@Service()
 export default class App {
   public app: express.Application;
   public port: number;
@@ -26,11 +27,18 @@ export default class App {
     const files = fs.readdirSync(controllersDir);
 
     files.forEach((file) => {
-      const module = this.fromFile(controllersDir + "/" + file);
 
-      const instance = Container.get<BaseController>(module[file.split(".ts")[0]]);
+      if(!file.includes('map')){
 
-      this.app.use("/", instance.router);
+        const module = this.fromFile(controllersDir + "/" + file);
+
+        const instance = Container.get<BaseController>(module[file.split(".js")[0]]);
+  
+        this.app.use("/", instance.router);
+
+      }
+
+
     });
   }
 

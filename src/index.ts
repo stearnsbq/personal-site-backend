@@ -18,18 +18,10 @@ async function main() {
 
     const app = new App(__dirname + "/controllers", [json({limit: '100mb'}), helmet(), cors({origin: "*"}), morgan('common')], 8080);
 
-
     const mongo = Container.get(MongoService);
     const git = Container.get(GithubService)
 
-    
     await mongo.connect(process.env.MONGO_URL)
-
-    console.log(jwt.sign(
-      { username: "quinn50" },
-      process.env.JWT_SECRET,
-      { expiresIn: "30d" }
-    ))
 
     app.listen(async () => {
       console.log(`Listening on ${app.port}`);
